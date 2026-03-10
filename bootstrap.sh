@@ -12,12 +12,12 @@ fi
 echo "[OK] Running as root"
 
 ##### Backup sources.list #####
-echo "[STEP] Backing up existing APT sources.list"
+echo "[STEP 1] Backing up existing APT sources.list"
 cp /etc/apt/sources.list /etc/apt/sources.list.bak || true
 echo "[OK] sources.list backup complete"
 
 ##### Set sources.list #####
-echo "[STEP] Writing PocketCHIP-compatible APT sources"
+echo "[STEP 2] Writing PocketCHIP-compatible APT sources"
 cat >/etc/apt/sources.list <<'EOF'
 # Debian Jessie (archived)
 deb [trusted=yes] http://archive.debian.org/debian jessie main contrib non-free
@@ -34,7 +34,7 @@ EOF
 echo "[OK] APT sources configured"
 
 ##### Fix APT #####
-echo "[STEP] Applying APT compatibility fixes for Debian Jessie"
+echo "[STEP 3] Applying APT compatibility fixes for Debian Jessie"
 
 cat >/etc/apt/apt.conf.d/99jessie-archive <<EOF
 Acquire::Check-Valid-Until "false";
@@ -57,12 +57,12 @@ EOF
 echo "[OK] APT configuration fixes applied"
 
 ##### Refresh APT and setup locales #####
-echo "[STEP] Refreshing APT package lists"
+echo "[STEP 4] Refreshing APT package lists"
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 apt-get update
 
-echo "[STEP] Installing and configuring system locale (en_US.UTF-8)"
+echo "[STEP 5] Installing and configuring system locale (en_US.UTF-8)"
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get install -y locales
@@ -83,21 +83,21 @@ apt-get upgrade -y
 echo "[OK] System packages updated"
 
 ##### Timezone (Jessie-safe) #####
-echo "[STEP] Setting system timezone to America/Chicago"
+echo "[STEP 6] Setting system timezone to America/Chicago"
 echo "America/Chicago" >/etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 echo "[OK] Timezone configured"
 
 ##### Install personal applications #####
-echo "[STEP] Installing personal applications (vim, figlet)"
+echo "[STEP 7] Installing personal applications (vim, figlet)"
 apt-get install -y vim git python3
 echo "[OK] Applications installed"
 
 ##### Create scripts directory #####
-echo "[STEP] Creating clock script directory"
+echo "[STEP 8] Creating clock script directory"
 mkdir -p /home/chip/scripts/clock
 
-echo "[STEP] Writing clock script"
+echo "[STEP 9] Writing clock script"
 
 cat >/home/chip/scripts/clock/bclock.py <<'EOF'
 #!/usr/bin/env python3

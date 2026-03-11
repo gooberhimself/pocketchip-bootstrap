@@ -317,6 +317,11 @@ EOF
 chown chip:chip /home/chip/scripts/clock/bclock.py 
 chmod 755 /home/chip/scripts/clock/bclock.py 
 
+# Uncomment useful aliases in .bashrc
+sed -i 's/^\([[:space:]]*\)#\(alias \(dir\|vdir\|grep\|fgrep\|egrep\)=\)/\1\2/' ~/.bashrc
+sed -i 's/^#\(alias \(ll\|la\|l\)=\)/\1/' ~/.bashrc
+source ~/.bashrc
+
 echo "[OK] Clock script installed
 
 echo "======================================"
